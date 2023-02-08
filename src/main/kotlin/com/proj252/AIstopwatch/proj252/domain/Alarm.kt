@@ -15,7 +15,7 @@ import lombok.Setter
 class Alarm {
 
     @Id
-    private var melody: String = "default"
+    private var ringtoneName: String = "default"
 
     @Column
     private var ison: Boolean = false

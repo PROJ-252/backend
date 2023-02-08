@@ -13,7 +13,7 @@ interface SDJStopwatchRepo: JpaRepository<TmpReport,Long>,StopwatchRepo {
     @Query("select totalTime from TmpReport where userId=:userId")
     override fun getTotalTime(userId: Long): Int
 
-    @Query("update TmpReport set totalTime=:second where id=:userId")
+    @Query("update TmpReport set totalTime=:second where userId=:userId")
     override fun setTotalTime(userId: Long, second: Int)
 
 //    @Query("UPDATE TmpReport SET total_time = :second where date = :userId")

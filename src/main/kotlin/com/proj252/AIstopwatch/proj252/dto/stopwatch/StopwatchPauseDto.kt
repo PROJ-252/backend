@@ -1,7 +1,7 @@
-package com.proj252.AIstopwatch.proj252.dao.stopwatch
+package com.proj252.AIstopwatch.proj252.dto.stopwatch
 
 import java.util.Date
 
-data class StopwatchPauseDao(
+data class StopwatchPauseDto(
     var pauseTime: Date
 )

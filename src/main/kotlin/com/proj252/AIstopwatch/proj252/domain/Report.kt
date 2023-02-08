@@ -16,7 +16,7 @@ import java.util.*
 class Report {
 
     @Id
-    private lateinit var date: Date
+    private lateinit var date: String
     @Column
     private var totalTime: Int = -1 // -1이면 초기화 오류상황 const를 하나 만들어서 처리해도 될듯 NONE
     @Column
