@@ -3,6 +3,8 @@ package com.proj252.AIstopwatch.proj252.domain
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.OneToOne
 import lombok.Data
 import lombok.Getter
 import lombok.NoArgsConstructor
@@ -11,18 +13,13 @@ import lombok.RequiredArgsConstructor
 import lombok.Setter
 
 @Entity
-@Data //id setter는 막아야함
-class Alarm {
-
+data class Alarm(
     @Id
-    private var ringtoneName: String = "default"
+    @OneToOne @JoinColumn(name = "user_id")
+    val user:User,
 
-    @Column
-    private var ison: Boolean = false
-
-    @Column @NonNull
-    private var userId: Long = -1
-    //userId == -1일 때 초기화 오류
-
-
-}
+    @Column(name = "ison")
+    var ison: Int,
+    @Column(name = "ringtone_name")
+    var ringtoneName: String
+)
