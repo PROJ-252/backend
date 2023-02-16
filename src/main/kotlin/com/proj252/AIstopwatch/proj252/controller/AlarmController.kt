@@ -1,6 +1,5 @@
 package com.proj252.AIstopwatch.proj252.controller
 
-import com.proj252.AIstopwatch.proj252.domain.Alarm
 import com.proj252.AIstopwatch.proj252.dto.stopwatch.AlarmDto
 import com.proj252.AIstopwatch.proj252.service.AlarmService
 import org.springframework.beans.factory.annotation.Autowired

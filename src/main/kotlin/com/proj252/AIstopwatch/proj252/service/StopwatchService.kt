@@ -13,21 +13,23 @@ import java.util.*
 @Transactional
 //!! Service니까 날짜 변화시 초기화 등이 여기서 반영되어야 한다는 것. 각자마다 조회 & 날짜 변경 확인 & 이후 진행하는 로직을 만들 것.
 class StopwatchService {
-    private lateinit var stopwatchRepo: SdjTmpReportRepo
+    private lateinit var tmpReportRepo: SdjTmpReportRepo
 
     @Autowired
     //여기서 repo 갈아끼울 수 있음
-    constructor(stopwatchRepo: SdjTmpReportRepo){
-        this.stopwatchRepo = stopwatchRepo
+    constructor(tmpReportRepo: SdjTmpReportRepo){
+        this.tmpReportRepo = tmpReportRepo
     }
 
     public fun getTotalTime(userId: Long, date: Date): Int{
         var totalTime: Int = 0
         try {
             val report: TmpReport? =
-                stopwatchRepo.findTmpReportByUser_UserIdAndDate(userId, date).orElse(null)
+                tmpReportRepo.findTmpReportByUser_UserIdAndDate(userId, date).orElse(null)
             if(report != null){
                 totalTime = report.totalTime
+            }else{
+                totalTime = -1
             }
 
         }catch (e: Exception){
@@ -39,13 +41,13 @@ class StopwatchService {
     public fun runStopwatch(userId: Long, date: Date) {
         try {
             var report: TmpReport? =
-                stopwatchRepo.findTmpReportByUser_UserIdAndDate(userId, date).orElse(null)
+                tmpReportRepo.findTmpReportByUser_UserIdAndDate(userId, date).orElse(null)
             if(report != null){
                 val changeTime: TmpChangeTime = TmpChangeTime(date,report)
                 report.changeTimes.add(changeTime)
-                stopwatchRepo.save(report)
+                tmpReportRepo.save(report)
             }else{
-                //make exception
+                print("NO Reports!")
             }
 
         } catch (e: Exception) {
@@ -56,11 +58,11 @@ class StopwatchService {
     public fun pauseStopwatch(userId: Long, date: Date){
         try{
             var report: TmpReport? =
-                stopwatchRepo.findTmpReportByUser_UserIdAndDate(userId, date).orElse(null)
+                tmpReportRepo.findTmpReportByUser_UserIdAndDate(userId, date).orElse(null)
             if(report != null){
                 val changeTime: TmpChangeTime = TmpChangeTime(date,report)
                 report.changeTimes.add(changeTime)
-                stopwatchRepo.save(report)
+                tmpReportRepo.save(report)
             }else{
                 //make exception
             }
@@ -74,11 +76,11 @@ class StopwatchService {
     public fun warnStopwatch(userId: Long, date: Date){
         try{
             var report: TmpReport? =
-                stopwatchRepo.findTmpReportByUser_UserIdAndDate(userId, date).orElse(null)
+                tmpReportRepo.findTmpReportByUser_UserIdAndDate(userId, date).orElse(null)
             if(report != null){
                 val warnTime: TmpWarnTime = TmpWarnTime(date,report)
                 report.warnTimes.add(warnTime)
-                stopwatchRepo.save(report)
+                tmpReportRepo.save(report)
             }else{
                 //make exception
             }
@@ -90,10 +92,12 @@ class StopwatchService {
     public fun saveStopwatch(userId: Long, date: Date, time: Int){
         try {
             var report: TmpReport? =
-                stopwatchRepo.findTmpReportByUser_UserIdAndDate(userId, date).orElse(null)
+                tmpReportRepo.findTmpReportByUser_UserIdAndDate(userId, date).orElse(null)
             if(report != null){
                 report.totalTime = time
-                stopwatchRepo.save(report)
+                tmpReportRepo.save(report)
+            }else{
+                print("DB에서 Report를 찾을 수 없습니다.")
             }
         }catch (e: Exception){
             //!! 알아서 처리
