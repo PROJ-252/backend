@@ -5,15 +5,15 @@ import jakarta.persistence.*
 @Entity
 data class User(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var userId: Long,
+    val userId: Long? = null,
 
     @Column(name = "nickname")
-    private var nickname: String?,
+    private var nickname: String,
 
-    @OneToOne(mappedBy = "user")
-    private val tmpReport: TmpReport,
-    @OneToOne(mappedBy="user")
-    private val member: Member?,
-    @OneToOne(mappedBy = "user")
-    private val alarm: Alarm
+    @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL])
+    private val tmpReport: TmpReport? = null,
+    @OneToOne(mappedBy="user", cascade = [CascadeType.REMOVE, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH])
+    private val member: Member? = null,
+    @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL])
+    private val alarm: Alarm? = null
 )
