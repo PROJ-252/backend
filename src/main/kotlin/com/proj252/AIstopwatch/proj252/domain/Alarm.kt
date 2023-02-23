@@ -6,12 +6,6 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.MapsId
 import jakarta.persistence.OneToOne
-import lombok.Data
-import lombok.Getter
-import lombok.NoArgsConstructor
-import lombok.NonNull
-import lombok.RequiredArgsConstructor
-import lombok.Setter
 
 @Entity
 data class Alarm(
@@ -21,7 +15,7 @@ data class Alarm(
 
     @OneToOne @JoinColumn(name = "user_id")
     @MapsId
-    val user:User,
+    val customUser:CustomUser,
 
     @Column(name = "ison")
     var ison: Int,

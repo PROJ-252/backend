@@ -16,5 +16,5 @@ data class Member(
 
     @OneToOne
     @JoinColumn(name = "userId")
-    val user:User
+    val customUser:CustomUser
 )

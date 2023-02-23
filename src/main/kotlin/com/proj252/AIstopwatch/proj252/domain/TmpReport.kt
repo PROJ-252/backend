@@ -1,11 +1,6 @@
 package com.proj252.AIstopwatch.proj252.domain
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.OneToMany
-import jakarta.persistence.OneToOne
+import jakarta.persistence.*
 import lombok.NonNull
 import java.util.Date
 
@@ -16,7 +11,7 @@ data class TmpReport(
     @Id @NonNull
     val date: Date,
     @OneToOne @JoinColumn(name = "user_id")
-    val user: User,
+    val customUser: CustomUser,
 
     @Column(name = "total_time")
     var totalTime: Int,
@@ -27,8 +22,8 @@ data class TmpReport(
     @Column(name = "goal_ending")
     var goalEnding: Date?,
 
-    @OneToMany(mappedBy = "tmpReport")
+    @OneToMany(mappedBy = "tmpReport", cascade = [CascadeType.ALL])
     var changeTimes: MutableList<TmpChangeTime>,
-    @OneToMany(mappedBy = "tmpReport")
+    @OneToMany(mappedBy = "tmpReport", cascade = [CascadeType.ALL])
     var warnTimes: MutableList<TmpWarnTime>
 )

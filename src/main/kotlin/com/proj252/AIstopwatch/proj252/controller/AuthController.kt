@@ -34,4 +34,9 @@ class AuthController {
         authService.unregister(userId)
     }
 
+    @PostMapping("/without-login")
+    fun withoutLogin(@CookieValue userId: Long){
+        authService.useWithoutLogin(userId)
+    }
+
 }

@@ -1,10 +1,9 @@
 package com.proj252.AIstopwatch.proj252.service
 
 import com.proj252.AIstopwatch.proj252.domain.Member
-import com.proj252.AIstopwatch.proj252.domain.User
+import com.proj252.AIstopwatch.proj252.domain.CustomUser
 import com.proj252.AIstopwatch.proj252.dto.auth.RegisterDto
 import com.proj252.AIstopwatch.proj252.dto.auth.SigninDto
-import com.proj252.AIstopwatch.proj252.repository.SdjAlarmRepo
 import com.proj252.AIstopwatch.proj252.repository.SdjMemberRepo
 import com.proj252.AIstopwatch.proj252.repository.SdjUserRepo
 import org.springframework.beans.factory.annotation.Autowired
@@ -57,9 +56,11 @@ class AuthService {
             //400번대 에러만들기
         }
     }
-    public fun useWithoutLogin(){
-        //session Id 쿠키로 전달
-        userRepo.save(User(nickname = "UNKNOWN"))
+    public fun useWithoutLogin(userId: Long){
+        if(!isConnecting(userId)){
+            //session Id 쿠키로 전달
+            userRepo.save(CustomUser(nickname = "UNKNOWN"))
+        }
     }
 
 
@@ -84,12 +85,12 @@ class AuthService {
     private fun registerMember(registerDto: RegisterDto){
         if(!memberRepo.existsMemberById(registerDto.accountId)){
             //User등록 후 User 반환
-            val user: User = registerUser(registerDto.nickname)
+            val customUser: CustomUser = registerUser(registerDto.nickname)
 
             val member: Member = Member(
                 id = registerDto.accountId,
                 password = registerDto.password,
-                user = user
+                customUser = customUser
             )
 
             memberRepo.save(member)
@@ -104,8 +105,8 @@ class AuthService {
         return memberRepo.existsMemberById(accountId)
     }
 
-    private fun registerUser(nickname: String): User{
-        return userRepo.save(User(nickname = nickname))
+    private fun registerUser(nickname: String): CustomUser{
+        return userRepo.save(CustomUser(nickname = nickname))
     }
 
 }
