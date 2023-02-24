@@ -24,6 +24,7 @@ class OAuth2LoginSuccessHandler : AuthenticationSuccessHandler {
         // Use the authorized client to access the protected resource
         val accessToken = authorizedClient.accessToken
 
-        // TODO: redirect the user to a protected page or display a success message
+        // TODO: redirect the user to a protected page or display a success message & accessToken 넣어서 전달.
+
     }
 }
