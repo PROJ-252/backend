@@ -6,12 +6,15 @@ import com.proj252.AIstopwatch.proj252.dto.stopwatch.AlarmDto
 import com.proj252.AIstopwatch.proj252.service.AuthService
 import com.proj252.AIstopwatch.proj252.service.GoogleOAuth2UserService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService
 import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.web.bind.annotation.*
+import java.lang.ProcessBuilder.Redirect
 
 @RestController
 @RequestMapping("auth")
@@ -26,11 +29,12 @@ class AuthController{
     }
 
     @GetMapping("/signin")
-    fun signIn(@AuthenticationPrincipal oauth2User: OAuth2User?): String{
-        return if (oauth2User != null) {
-            "User is already logged in."
+    fun signIn(@AuthenticationPrincipal oAuth2UserRequest: OAuth2UserRequest): ResponseEntity<String>{
+        return if (oAuth2UserRequest != null) {
+            ResponseEntity.ok("Alreay signed in")
         } else {
-            "Please log in with OAuth2 provider."
+            ResponseEntity.ok("Alreay signed in")
+            //redirection to /signin-success
         }
     }
     //GetMapping에서 리턴값은 뭘 의미하는가?
@@ -41,10 +45,9 @@ class AuthController{
 
         // Access user information
         val nickname = userDetails.name
-        // ...
 
         // Return success message
-        return "Logged in successfully as $nickname!"
+        return "SignIn success - $nickname!"
     }
 
     @PostMapping("/signout")

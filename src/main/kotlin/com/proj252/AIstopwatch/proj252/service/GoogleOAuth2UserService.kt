@@ -21,6 +21,7 @@ class GoogleOAuth2UserService : OAuth2UserService<OAuth2UserRequest, OAuth2User>
             ?: throw OAuth2AuthenticationException(OAuth2Error("invalid_user_info_response"))
         val response: Map<String, Any> = responseRaw.map { (key, value) -> key.toString() to (value as? Any ?: "") }.toMap()
         val nickname = response["nickname"] as String?
+        val accessToken = response["accessToken"] as String?
         val authorities = mutableListOf(SimpleGrantedAuthority("ROLE_USER"))
         return User(nickname, "", authorities).let { SimpleOAuth2User(it, response) }
     }
