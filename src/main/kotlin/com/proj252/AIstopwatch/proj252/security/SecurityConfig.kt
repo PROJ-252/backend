@@ -14,16 +14,24 @@ class SecurityConfig {
 
     @Bean
     public fun filterChain(http: HttpSecurity): SecurityFilterChain {
-        http.authorizeHttpRequests()
-            .anyRequest().authenticated()
-            .and()
-            .oauth2Login()
-            .loginPage("/login") //!!로그인이 이뤄질 페이지 명시
-            .userInfoEndpoint()
-            .userService(GoogleOAuth2UserService())
-            .and()
-            .successHandler(OAuth2LoginSuccessHandler())
+        http
+            .authorizeHttpRequests()
+                .anyRequest().authenticated()
+                .and()
+            .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/after-login")
+                .failureForwardUrl("/after-failed")
+                .and()
+            .logout()
+                .logoutSuccessUrl("/after-logout")
 
+//            .oauth2Login()
+//            .loginPage("/login") //!!로그인이 이뤄질 페이지 명시
+//            .userInfoEndpoint()
+//            .userService(GoogleOAuth2UserService())
+//            .and()
+//            .successHandler(OAuth2LoginSuccessHandler())
 
         return http.build()
     }
