@@ -4,11 +4,19 @@ import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.core.env.Environment
+import org.springframework.stereotype.Component
+
 import java.util.*
 import javax.crypto.SecretKey
 
+@Component
 object JwtUtil {
-    private const val SECRET_KEY = "secret-key" // Replace with your own secret key
+
+    @Value("\${jwt.secret}")
+    private lateinit var SECRET_KEY: String
+
     private const val EXPIRATION_TIME = 86400000 // Token expiration time in milliseconds (24 hour)
     private val KEY: SecretKey = Keys.hmacShaKeyFor(SECRET_KEY.toByteArray())
 
