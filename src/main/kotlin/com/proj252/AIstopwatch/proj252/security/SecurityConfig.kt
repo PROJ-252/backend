@@ -16,15 +16,19 @@ class SecurityConfig {
     public fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .authorizeHttpRequests()
-                .anyRequest().authenticated()
+                .requestMatchers("/calendar/**").authenticated()
+                .anyRequest().permitAll()
                 .and()
             .formLogin()
                 .loginPage("/login")
                 .defaultSuccessUrl("/after-login")
                 .failureForwardUrl("/after-failed")
+                .permitAll()
                 .and()
             .logout()
+                .logoutUrl("/logout")
                 .logoutSuccessUrl("/after-logout")
+                .permitAll()
 
 //            .oauth2Login()
 //            .loginPage("/login") //!!로그인이 이뤄질 페이지 명시
