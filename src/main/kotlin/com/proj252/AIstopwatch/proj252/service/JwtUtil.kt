@@ -6,6 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.env.Environment
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
 
 import java.util.*
@@ -31,7 +32,7 @@ object JwtUtil {
     }
 
     // Validates the specified JWT token and returns true if it is valid
-    fun validateToken(token: String): Boolean {
+    fun validateToken(token: String, userDetails: UserDetails): Boolean {
         return try {
             val claims = getClaimsFromToken(token)
             !claims.expiration.before(Date())

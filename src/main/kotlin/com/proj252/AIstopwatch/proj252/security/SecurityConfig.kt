@@ -1,32 +1,35 @@
 package com.proj252.AIstopwatch.proj252.security
 
-import com.proj252.AIstopwatch.proj252.service.GoogleOAuth2UserService
+import com.proj252.AIstopwatch.proj252.service.JwtUtil
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfig {
+class SecurityConfig(val jwtUtil: JwtUtil, val userDetailsService: UserDetailsService) {
 
     @Bean
     public fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
+            .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter::class.java)
             .authorizeHttpRequests()
                 .requestMatchers("/calendar/**").authenticated()
                 .anyRequest().permitAll()
                 .and()
             .formLogin()
                 .loginPage("/signin")
-                .defaultSuccessUrl("/stopwatch")
+                .defaultSuccessUrl("/singin-success")
                 .failureForwardUrl("/signin")
                 .permitAll()
                 .and()
             .logout()
-                .logoutUrl("/signout")
+                .logoutUrl("/signout-success")
                 .logoutSuccessUrl("/stopwatch")
                 .permitAll()
 
@@ -38,5 +41,10 @@ class SecurityConfig {
 //            .successHandler(OAuth2LoginSuccessHandler())
 
         return http.build()
+    }
+
+    @Bean
+    fun jwtAuthenticationFilter(): JwtAuthenticationFilter{
+        return JwtAuthenticationFilter(jwtUtil, userDetailsService)
     }
 }

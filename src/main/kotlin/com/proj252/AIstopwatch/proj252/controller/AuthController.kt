@@ -20,17 +20,15 @@ import java.lang.ProcessBuilder.Redirect
 @RequestMapping("auth")
 class AuthController{
     private val authService: AuthService
-    private val oauth2UserService: GoogleOAuth2UserService
 
     @Autowired
-    constructor(authService: AuthService, oauth2UserService: GoogleOAuth2UserService){
+    constructor(authService: AuthService){
         this.authService = authService
-        this.oauth2UserService = oauth2UserService
     }
 
     @GetMapping("/signin")
-    fun signIn(@AuthenticationPrincipal oAuth2UserRequest: OAuth2UserRequest): ResponseEntity<String>{
-        return if (oAuth2UserRequest != null) {
+    fun signIn(): ResponseEntity<String>{
+        return if (true) {
             ResponseEntity.ok("Alreay signed in")
         } else {
             ResponseEntity.ok("Alreay signed in")
@@ -40,15 +38,24 @@ class AuthController{
     //GetMapping에서 리턴값은 뭘 의미하는가?
 
     @PostMapping("/signin-success")
-    fun signInSuccess(@AuthenticationPrincipal oAuth2UserRequest: OAuth2UserRequest): String{
-        val userDetails: OAuth2User = oauth2UserService.loadUser(oAuth2UserRequest)
-
-        // Access user information
-        val nickname = userDetails.name
+    fun signInSuccess(): String{
+//        val userDetails: OAuth2User = oauth2UserService.loadUser(oAuth2UserRequest)
+//
+//        // Access user information
+//        val nickname = userDetails.name
 
         // Return success message
-        return "SignIn success - $nickname!"
+        return "SignIn success - nickname!"
+
+        //redirect to stopwatch
     }
+
+    //아래 부분은 알아서~ 위의 포맷을 적용해서 만ㄱ들것
+    //
+    //
+    //
+    //
+    //
 
     @PostMapping("/signout")
     fun signOut(@CookieValue userId: Long){
