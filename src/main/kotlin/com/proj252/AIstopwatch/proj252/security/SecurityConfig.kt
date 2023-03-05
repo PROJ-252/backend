@@ -26,7 +26,6 @@ class SecurityConfig(val jwtUtil: JwtUtil, val userDetailsService: UserDetailsSe
                 .loginPage("/signin")
                 .defaultSuccessUrl("/singin-success")
                 .failureForwardUrl("/signin")
-                .permitAll()
                 .and()
             .logout()
                 .logoutUrl("/signout-success")

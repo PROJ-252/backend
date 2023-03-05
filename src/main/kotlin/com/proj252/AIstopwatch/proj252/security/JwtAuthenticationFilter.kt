@@ -55,10 +55,16 @@ class JwtAuthenticationFilter(
 
                     // SecurityContextHolder가 로그인 했다는 맥락을 가지게해준다.
                     SecurityContextHolder.getContext().authentication = authenticationToken
+
                 }else{
-                    print("일치안해요~")
+                    print("로그인 정보가 일치안해요~????")
                 }
             }
+        }
+        //로그인 되어있지 않은 상태를 의미한다.
+        else{
+            //로그인 페이지로 이동하게끔 처리하자.
+            response.sendRedirect("/singin")
         }
 
         filterChain.doFilter(request, response)
